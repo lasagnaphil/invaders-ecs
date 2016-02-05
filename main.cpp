@@ -6,142 +6,27 @@
 #include <entityx/entityx.h>
 #include <sstream>
 
+namespace ex = entityx;
+
+#include "Components/Body.h"
+#include "Components/Collider.h"
+#include "Components/PrimitiveShape.h"
+#include "Components/Sprite.h"
+
+#include "Events/CollisionEvent.h"
+
+#include "Systems/BodySystem.h"
+#include "Systems/CollisionSystem.h"
+#include "Systems/DestroySystem.h"
+#include "Systems/PrimitiveSystem.h"
+#include "Systems/RenderSystem.h"
+
 using std::cerr;
 using std::cout;
 using std::endl;
 
-namespace ex = entityx;
-
-struct Body {
-    Body(const sf::Vector2f &position, const sf::Vector2f &velocity, float angVelocity = 0.0)
-            :position(position), velocity(velocity), angVelocity(angVelocity) {}
-    sf::Vector2f position;
-    sf::Vector2f velocity;
-    float rotation = 0.0;
-    float angVelocity;
-};
-
-struct PrimitiveShape {
-    explicit PrimitiveShape(std::unique_ptr<sf::Shape> shape) : shape(std::move(shape)) {}
-
-    std::unique_ptr<sf::Shape> shape;
-};
-
-struct Sprite {
-    explicit Sprite(std::unique_ptr<sf::Sprite> sprite) : sprite(std::move(sprite)) {}
-
-    std::unique_ptr<sf::Sprite> sprite;
-};
-
-struct Collider {
-    explicit Collider(sf::FloatRect rect) : rect(rect) {}
-
-    sf::FloatRect rect;
-};
-
-struct CollisionEvent {
-    CollisionEvent(ex::Entity left, ex::Entity right) : left(left), right(right) {}
-
-    ex::Entity left, right;
-};
-
-class BodySystem : public ex::System<BodySystem>
-{
-public:
-    void update(ex::EntityManager &es, ex::EventManager &events, ex::TimeDelta dt) override {
-        es.each<Body>([dt](ex::Entity entity, Body &body) {
-            body.position += body.velocity * static_cast<float>(dt);
-            body.rotation += body.angVelocity * dt;
-        });
-    }
-};
-
-class PrimitiveSystem : public ex::System<PrimitiveSystem>
-{
-public:
-    void update(ex::EntityManager &es, ex::EventManager &events, ex::TimeDelta dt) override {
-        ex::ComponentHandle<Body> body;
-        ex::ComponentHandle<PrimitiveShape> primitiveShape;
-        for (ex::Entity entity : es.entities_with_components(body, primitiveShape))
-        {
-            primitiveShape->shape->setPosition(body->position);
-            primitiveShape->shape->setRotation(body->rotation);
-        }
-    }
-};
 
 
-class CollisionSystem : public ex::System<CollisionSystem>
-{
-public:
-    void update(ex::EntityManager &es, ex::EventManager &events, ex::TimeDelta dt) override {
-        ex::ComponentHandle<PrimitiveShape> left_shape, right_shape;
-        for (ex::Entity left_entity : es.entities_with_components(left_shape)) {
-            for (ex::Entity right_entity : es.entities_with_components(right_shape)) {
-                if (left_shape->shape->getGlobalBounds().intersects(right_shape->shape->getGlobalBounds())) {
-                    if (left_shape == right_shape) continue;
-                    events.emit<CollisionEvent>(left_entity, right_entity);
-                }
-            }
-        }
-    }
-};
-
-class DestroySystem : public ex::System<DestroySystem>, public ex::Receiver<DestroySystem>
-{
-public:
-    void configure(ex::EventManager &events) override {
-        events.subscribe<CollisionEvent>(*this);
-    }
-
-    void update(ex::EntityManager &es, ex::EventManager &events, ex::TimeDelta dt) override {
-        for (ex::Entity entity : collided) {
-            entity.destroy();
-        }
-        collided.clear();
-    }
-
-    void receive(const CollisionEvent &collision) {
-        collided.insert(collision.left);
-        collided.insert(collision.right);
-    }
-
-private:
-    std::unordered_set<ex::Entity> collided;
-};
-
-class RenderSystem : public ex::System<RenderSystem>
-{
-public:
-    explicit RenderSystem(sf::RenderTarget& target, sf::Font &font) : target(target) {
-        text.setFont(font);
-        text.setPosition(sf::Vector2f(2, 2));
-        text.setCharacterSize(18);
-        text.setColor(sf::Color::White);
-    }
-
-    void update(ex::EntityManager &es, ex::EventManager &events, ex::TimeDelta dt) override {
-        es.each<Body, PrimitiveShape>([this](ex::Entity entity, Body &body, PrimitiveShape &renderable) {
-            target.draw(*renderable.shape.get());
-        });
-        last_update += dt;
-        frame_count++;
-        if (last_update >= 0.5) {
-            std::ostringstream out;
-            const double fps = frame_count / last_update;
-            out << es.size() << " entities (" << static_cast<int>(fps) << " fps)";
-            text.setString(out.str());
-            last_update = 0.0;
-            frame_count = 0.0;
-        }
-        target.draw(text);
-    }
-private:
-    double last_update = 0.0;
-    double frame_count = 0.0;
-    sf::RenderTarget &target;
-    sf::Text text;
-};
 
 class Level : public ex::EntityX {
 public:
