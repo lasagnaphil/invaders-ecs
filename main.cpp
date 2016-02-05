@@ -56,14 +56,30 @@ public:
     }
 };
 
+class PrimitiveSystem : public ex::System<PrimitiveSystem>
+{
+public:
+    void update(ex::EntityManager &es, ex::EventManager &events, ex::TimeDelta dt) override {
+        ex::ComponentHandle<Body> body;
+        ex::ComponentHandle<PrimitiveShape> primitiveShape;
+        for (ex::Entity entity : es.entities_with_components(body, primitiveShape))
+        {
+            primitiveShape->shape->setPosition(body->position);
+            primitiveShape->shape->setRotation(body->rotation);
+        }
+    }
+};
+
+
 class CollisionSystem : public ex::System<CollisionSystem>
 {
 public:
     void update(ex::EntityManager &es, ex::EventManager &events, ex::TimeDelta dt) override {
-        ex::ComponentHandle<Collider> left_collider, right_collider;
-        for (ex::Entity left_entity : es.entities_with_components(left_collider)) {
-            for (ex::Entity right_entity : es.entities_with_components(right_collider)) {
-                if (left_collider->rect.intersects(right_collider->rect)) {
+        ex::ComponentHandle<PrimitiveShape> left_shape, right_shape;
+        for (ex::Entity left_entity : es.entities_with_components(left_shape)) {
+            for (ex::Entity right_entity : es.entities_with_components(right_shape)) {
+                if (left_shape->shape->getGlobalBounds().intersects(right_shape->shape->getGlobalBounds())) {
+                    if (left_shape == right_shape) continue;
                     events.emit<CollisionEvent>(left_entity, right_entity);
                 }
             }
@@ -106,8 +122,6 @@ public:
 
     void update(ex::EntityManager &es, ex::EventManager &events, ex::TimeDelta dt) override {
         es.each<Body, PrimitiveShape>([this](ex::Entity entity, Body &body, PrimitiveShape &renderable) {
-            renderable.shape->setPosition(body.position);
-            renderable.shape->setRotation(body.rotation);
             target.draw(*renderable.shape.get());
         });
         last_update += dt;
@@ -134,6 +148,7 @@ public:
     explicit Level(sf::RenderTarget &target, sf::Font &font) {
         // initialize the systems
         systems.add<BodySystem>();
+        systems.add<PrimitiveSystem>();
         systems.add<CollisionSystem>();
         systems.add<DestroySystem>();
         systems.add<RenderSystem>(target, font);
@@ -142,17 +157,16 @@ public:
         // create the entities
         for(int i = 0; i < 10; i++) {
             ex::Entity entity = entities.create();
-            entity.assign<Body>(sf::Vector2f(100.0f, 100.0f + 40.0f * i), sf::Vector2f(0.0f, 10.0f * (5-i)));
+            entity.assign<Body>(sf::Vector2f(100.0f, 100.0f + 40.0f * i), sf::Vector2f(0.0f, 10.0f * (10-i)));
             std::unique_ptr<sf::RectangleShape> shape(new sf::RectangleShape(sf::Vector2f(10.0f, 10.0f)));
             shape->setFillColor(sf::Color(128, 128, 128));
-            sf::FloatRect rect = shape->getLocalBounds();
             entity.assign<PrimitiveShape>(std::move(shape));
-            //entity.assign<Collider>(rect);
         }
     }
 
     void update(ex::TimeDelta dt) {
         systems.update<BodySystem>(dt);
+        systems.update<PrimitiveSystem>(dt);
         systems.update<CollisionSystem>(dt);
         systems.update<DestroySystem>(dt);
         systems.update<RenderSystem>(dt);
@@ -161,7 +175,7 @@ public:
 
 int main() {
 
-    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Invaders - ECS", sf::Style::Default);
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Invaders - ECS", sf::Style::Default);
     window.setFramerateLimit(60);
     sf::Font font;
     if (!font.loadFromFile("LiberationSans-Regular.ttf")) {
