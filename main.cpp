@@ -1,15 +1,18 @@
 #include <iostream>
 #include <memory>
 #include <unordered_set>
+#include <sstream>
+
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <entityx/entityx.h>
-#include <sstream>
+#include <Thor/Resources.hpp>
 
 namespace ex = entityx;
 
 #include "Components/Body.h"
 #include "Components/Collider.h"
+#include "Components/Player.h"
 #include "Components/PrimitiveShape.h"
 #include "Components/Sprite.h"
 
@@ -18,15 +21,13 @@ namespace ex = entityx;
 #include "Systems/BodySystem.h"
 #include "Systems/CollisionSystem.h"
 #include "Systems/DestroySystem.h"
+#include "Systems/PlayerSystem.h"
 #include "Systems/PrimitiveSystem.h"
 #include "Systems/RenderSystem.h"
 
 using std::cerr;
 using std::cout;
 using std::endl;
-
-
-
 
 class Level : public ex::EntityX {
 public:
@@ -62,13 +63,15 @@ int main() {
 
     sf::RenderWindow window(sf::VideoMode(800, 600), "Invaders - ECS", sf::Style::Default);
     window.setFramerateLimit(60);
-    sf::Font font;
-    if (!font.loadFromFile("LiberationSans-Regular.ttf")) {
-        cerr << "error: failed to load LiberationSans-Regular.ttf" << endl;
-        return 1;
+    thor::ResourceHolder<sf::Font, std::string> fontHolder;
+    try {
+        fontHolder.acquire("LiberationSans", thor::Resources::fromFile<sf::Font>("LiberationSans-Regular.ttf"));
+    }
+    catch (thor::ResourceLoadingException& e) {
+        std::cout << "Error: " << e.what() << std::endl;
     }
 
-    Level level(window, font);
+    Level level(window, fontHolder["LiberationSans"]);
     sf::Clock clock;
 
     while (window.isOpen()) {
