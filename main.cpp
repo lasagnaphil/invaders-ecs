@@ -25,6 +25,8 @@ namespace ex = entityx;
 #include "Systems/PrimitiveSystem.h"
 #include "Systems/RenderSystem.h"
 
+#include "EntityFactory.h"
+
 using std::cerr;
 using std::cout;
 using std::endl;
@@ -38,15 +40,16 @@ public:
         systems.add<CollisionSystem>();
         systems.add<DestroySystem>();
         systems.add<RenderSystem>(target, font);
+
+        systems.add<PlayerSystem>();
         systems.configure();
+
+        // create the player
+        EntityFactory::createPlayer(entities);
 
         // create the entities
         for(int i = 0; i < 10; i++) {
-            ex::Entity entity = entities.create();
-            entity.assign<Body>(sf::Vector2f(100.0f, 100.0f + 40.0f * i), sf::Vector2f(0.0f, 10.0f * (10-i)));
-            std::unique_ptr<sf::RectangleShape> shape(new sf::RectangleShape(sf::Vector2f(10.0f, 10.0f)));
-            shape->setFillColor(sf::Color(128, 128, 128));
-            entity.assign<PrimitiveShape>(std::move(shape));
+            EntityFactory::createTestObject(entities, sf::Vector2f(100.0f, 100.0f + 40.0f * i), sf::Vector2f(0.0f, 10.0f * (10-i)));
         }
     }
 
@@ -56,6 +59,8 @@ public:
         systems.update<CollisionSystem>(dt);
         systems.update<DestroySystem>(dt);
         systems.update<RenderSystem>(dt);
+
+        systems.update<PlayerSystem>(dt);
     }
 };
 

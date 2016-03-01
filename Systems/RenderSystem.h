@@ -9,6 +9,7 @@ class RenderSystem : public ex::System<RenderSystem>
 {
 public:
     explicit RenderSystem(sf::RenderTarget& target, sf::Font &font) : target(target) {
+        // inits fps text
         text.setFont(font);
         text.setPosition(sf::Vector2f(2, 2));
         text.setCharacterSize(18);
@@ -21,6 +22,7 @@ public:
         });
         last_update += dt;
         frame_count++;
+        // updates fps text every 0.5 seconds
         if (last_update >= 0.5) {
             std::ostringstream out;
             const double fps = frame_count / last_update;
@@ -31,6 +33,7 @@ public:
         }
         target.draw(text);
     }
+
 private:
     double last_update = 0.0;
     double frame_count = 0.0;

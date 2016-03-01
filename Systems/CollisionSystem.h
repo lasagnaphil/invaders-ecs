@@ -9,15 +9,22 @@ class CollisionSystem : public ex::System<CollisionSystem>
 {
 public:
     void update(ex::EntityManager &es, ex::EventManager &events, ex::TimeDelta dt) override {
-        ex::ComponentHandle<PrimitiveShape> left_shape, right_shape;
-        for (ex::Entity left_entity : es.entities_with_components(left_shape)) {
-            for (ex::Entity right_entity : es.entities_with_components(right_shape)) {
-                if (left_shape->shape->getGlobalBounds().intersects(right_shape->shape->getGlobalBounds())) {
-                    if (left_shape == right_shape) continue;
+        ex::ComponentHandle<Collider> left_collider, right_collider;
+        for (ex::Entity left_entity : es.entities_with_components(left_collider)) {
+            for (ex::Entity right_entity : es.entities_with_components(right_collider)) {
+                printRect(*left_collider->rect);
+                printRect(*right_collider->rect);
+                if (left_collider->rect->intersects(*right_collider->rect)) {
+                    if (left_collider == right_collider) continue;
                     events.emit<CollisionEvent>(left_entity, right_entity);
                 }
             }
         }
+    }
+
+    void printRect(const sf::FloatRect& rect)
+    {
+        std::cout << rect.left << " " << rect.top << std::endl;
     }
 };
 

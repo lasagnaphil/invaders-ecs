@@ -12,13 +12,15 @@
       <sourceFolder url="file://$MODULE_DIR$/cmake_modules/FindEntityX.cmake" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/cmake_modules/FindSFML.cmake" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/EntityFactory.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Components/Sprite.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Components/Collider.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Components/Body.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Components/Bullet.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Components/PrimitiveShape.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Components/Input.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Components/Player.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/EntityFactory.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Events/CollisionEvent.h" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
