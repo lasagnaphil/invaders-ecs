@@ -17,16 +17,16 @@ ex::Entity& EntityFactory::createPlayer(ex::EntityManager &es)
     entity.assign<Body>(sf::Vector2f(300.0f, 500.0f), sf::Vector2f(0.0f, 0.0f));
     std::unique_ptr<sf::RectangleShape> shape(new sf::RectangleShape(sf::Vector2f(20.0f, 20.0f)));
     shape->setFillColor(sf::Color(120, 0, 0));
-    entity.assign<Collider>(sf::FloatRect(sf::Vector2f(300.0f, 500.0f), sf::Vector2f(0.0f, 0.0f)));
+    entity.assign<Collider>(shape->getLocalBounds(), "player");
     entity.assign<PrimitiveShape>(std::move(shape));
 }
 ex::Entity& EntityFactory::createBullet(ex::EntityManager& es, sf::Vector2f position, float speed, int damage)
 {
     ex::Entity bullet = es.create();
     bullet.assign<Body>(position, sf::Vector2f(0.0f, speed));
-    std::unique_ptr<sf::CircleShape> shape(new sf::CircleShape(10));
+    std::unique_ptr<sf::CircleShape> shape(new sf::CircleShape(4));
     shape->setFillColor(sf::Color::Green);
-    bullet.assign<Collider>(shape->getLocalBounds());
+    bullet.assign<Collider>(shape->getLocalBounds(), "bullet");
     bullet.assign<PrimitiveShape>(std::move(shape));
     bullet.assign<Bullet>(damage);
 }
@@ -36,5 +36,6 @@ ex::Entity &EntityFactory::createTestObject(ex::EntityManager &es, sf::Vector2f 
     entity.assign<Body>(position, velocity);
     std::unique_ptr<sf::RectangleShape> shape(new sf::RectangleShape(sf::Vector2f(10.0f, 10.0f)));
     shape->setFillColor(sf::Color(128, 128, 128));
+    entity.assign<Collider>(shape->getLocalBounds(), "test_object");
     entity.assign<PrimitiveShape>(std::move(shape));
 }

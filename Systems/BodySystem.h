@@ -12,7 +12,6 @@ public:
         es.each<Body>([dt](ex::Entity entity, Body &body) {
             body.position += body.velocity * static_cast<float>(dt);
             body.rotation += body.angVelocity * dt;
-            //std::cout << "body: " << body.position.x << " " << body.position.y << std::endl;
         });
     }
 };

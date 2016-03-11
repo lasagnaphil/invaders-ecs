@@ -20,16 +20,14 @@ public:
         ex::ComponentHandle<Collider> left_collider, right_collider;
         for (ex::Entity left_entity : es.entities_with_components(left_collider)) {
             for (ex::Entity right_entity : es.entities_with_components(right_collider)) {
-                //printRect(left_collider->rect);
-                //printRect(right_collider->rect);
+                if (left_collider == right_collider) continue;
                 if (left_collider->rect.intersects(right_collider->rect)) {
-                    if (left_collider == right_collider) continue;
-                    std::cout << "CollisionEvent!" << std::endl;
-                    events.emit<CollisionEvent>(left_entity, right_entity);
+                    events.emit<CollisionEvent>(left_entity, right_entity, left_collider->tag, right_collider->tag);
                 }
             }
         }
     }
+
 
     void printRect(const sf::FloatRect& rect)
     {

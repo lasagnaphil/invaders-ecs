@@ -6,9 +6,11 @@
 #define INVADERS_ECS_COLLISIONEVENT_H
 
 struct CollisionEvent {
-    CollisionEvent(ex::Entity left, ex::Entity right) : left(left), right(right) {}
+    CollisionEvent(ex::Entity left, ex::Entity right, std::string leftTag, std::string rightTag)
+            : left(left), right(right), leftTag(leftTag), rightTag(rightTag) {}
 
     ex::Entity left, right;
+    std::string leftTag, rightTag;
 };
 
 #endif //INVADERS_ECS_COLLISIONEVENT_H

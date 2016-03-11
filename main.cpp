@@ -26,6 +26,7 @@ namespace ex = entityx;
 #include "Systems/RenderSystem.h"
 
 #include "EntityFactory.h"
+#include "InputManager.h"
 
 using std::cerr;
 using std::cout;
@@ -68,6 +69,7 @@ int main() {
 
     sf::RenderWindow window(sf::VideoMode(800, 600), "Invaders - ECS", sf::Style::Default);
     window.setFramerateLimit(60);
+    window.setKeyRepeatEnabled(false);
     thor::ResourceHolder<sf::Font, std::string> fontHolder;
     try {
         fontHolder.acquire("LiberationSans", thor::Resources::fromFile<sf::Font>("LiberationSans-Regular.ttf"));
