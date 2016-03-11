@@ -15,6 +15,7 @@ public:
         map["left"] = thor::Action(sf::Keyboard::Left);
         map["right"] = thor::Action(sf::Keyboard::Right);
         map["shoot"] = thor::Action(sf::Keyboard::Space, thor::Action::PressOnce);
+        map["quit"] = thor::Action(sf::Event::Closed);
     }
     static InputManager *inst() {
         if (!_inst)

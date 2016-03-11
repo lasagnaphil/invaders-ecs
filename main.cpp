@@ -82,7 +82,13 @@ int main() {
     sf::Clock clock;
 
     while (window.isOpen()) {
+
         sf::Event event;
+
+        InputManager::inst()->map.update(window);
+        if (InputManager::inst()->map.isActive("quit"))
+            window.close();
+
         while (window.pollEvent(event)) {
             switch(event.type) {
                 case sf::Event::Closed:
