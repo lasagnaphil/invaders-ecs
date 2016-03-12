@@ -5,9 +5,16 @@
 #ifndef INVADERS_ECS_COLLISIONSYSTEM_H
 #define INVADERS_ECS_COLLISIONSYSTEM_H
 
-class CollisionSystem : public ex::System<CollisionSystem>
+#include "../DestroyManager.h"
+
+class CollisionSystem : public ex::System<CollisionSystem>, public ex::Receiver<CollisionSystem>
 {
 public:
+    explicit CollisionSystem() {}
+    void configure(ex::EventManager &events) override {
+        events.subscribe<CollisionEvent>(*this);
+    }
+
     void update(ex::EntityManager &es, ex::EventManager &events, ex::TimeDelta dt) override {
         // update the colliders based on the bodies' position
         es.each<Body, Collider> ([](ex::Entity entity, Body &body, Collider &collider) {
@@ -28,12 +35,20 @@ public:
         }
     }
 
+    void receive(const CollisionEvent &event) {
+        event.onCollision(ColliderTag::Bullet, ColliderTag::TestObject, [](ex::Entity bullet, ex::Entity testObject){
+            DestroyManager::inst().destroy(bullet);
+            DestroyManager::inst().destroy(testObject);
+        });
+    }
+
 
     void printRect(const sf::FloatRect& rect)
     {
         std::cout << rect.left << " " << rect.top << std::endl;
         std::cout << rect.width << " " << rect.height << std::endl;
     }
+private:
 };
 
 #endif //INVADERS_ECS_COLLISIONSYSTEM_H

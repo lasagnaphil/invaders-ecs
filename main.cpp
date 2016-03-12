@@ -20,13 +20,14 @@ namespace ex = entityx;
 
 #include "Systems/BodySystem.h"
 #include "Systems/CollisionSystem.h"
-#include "Systems/DestroySystem.h"
 #include "Systems/PlayerSystem.h"
 #include "Systems/PrimitiveSystem.h"
 #include "Systems/RenderSystem.h"
+#include "Systems/EnemySystem.h"
 
 #include "EntityFactory.h"
 #include "InputManager.h"
+#include "DestroyManager.h"
 
 using std::cerr;
 using std::cout;
@@ -39,7 +40,6 @@ public:
         systems.add<BodySystem>();
         systems.add<PrimitiveSystem>();
         systems.add<CollisionSystem>();
-        systems.add<DestroySystem>();
         systems.add<RenderSystem>(target, font);
 
         systems.add<PlayerSystem>();
@@ -58,10 +58,11 @@ public:
         systems.update<BodySystem>(dt);
         systems.update<PrimitiveSystem>(dt);
         systems.update<CollisionSystem>(dt);
-        systems.update<DestroySystem>(dt);
         systems.update<RenderSystem>(dt);
 
         systems.update<PlayerSystem>(dt);
+
+        DestroyManager::inst().update(dt);
     }
 };
 
@@ -85,8 +86,8 @@ int main() {
 
         sf::Event event;
 
-        InputManager::inst()->map.update(window);
-        if (InputManager::inst()->map.isActive("quit"))
+        InputManager::inst().map.update(window);
+        if (InputManager::inst().map.isActive("quit"))
             window.close();
 
         while (window.pollEvent(event)) {
