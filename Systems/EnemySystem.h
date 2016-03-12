@@ -9,7 +9,10 @@
 
 class EnemySystem : ex::System<EnemySystem>
 {
-public:
+    void update(ex::EntityManager &es, ex::EventManager &events, ex::TimeDelta dt) override
+    {
 
+    }
+public:
 };
 #endif //INVADERS_ECS_ENEMYSYSTEM_H
