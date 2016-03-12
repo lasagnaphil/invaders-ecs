@@ -15,6 +15,7 @@
       <sourceFolder url="file://$MODULE_DIR$/Components/Enemy.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Components/Body.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Components/PrimitiveShape.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Components/SceneNode.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Components/Player.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Events/CollisionEvent.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/EntityFactory.cpp" isTestSource="false" />
