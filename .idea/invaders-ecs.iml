@@ -2,27 +2,29 @@
 <module type="CPP_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/cmake_modules/FindThor.cmake" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/cmake_modules/FindEntityX.cmake" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/cmake_modules/FindSFML.cmake" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Systems/BodySystem.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Systems/DestroySystem.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Systems/RenderSystem.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Systems/PrimitiveSystem.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Systems/PlayerSystem.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Systems/CollisionSystem.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/cmake_modules/FindThor.cmake" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/cmake_modules/FindEntityX.cmake" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/cmake_modules/FindSFML.cmake" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/EntityFactory.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Components/Sprite.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Components/Collider.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Components/Enemy.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Components/Body.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Components/Bullet.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Components/PrimitiveShape.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Components/Bullet.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Components/Player.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/InputManager.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Tags.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/EntityFactory.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Events/CollisionEvent.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/InputManager.h" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">

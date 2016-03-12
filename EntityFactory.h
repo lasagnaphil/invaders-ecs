@@ -16,6 +16,7 @@ public:
     static ex::Entity& createPlayer(ex::EntityManager& es);
     static ex::Entity& createBullet(ex::EntityManager& es, sf::Vector2f position, float speed, int damage);
     static ex::Entity& createTestObject(ex::EntityManager& es, sf::Vector2f position, sf::Vector2f velocity);
+    static ex::Entity& createEnemy(ex::EntityManager& es, sf::Vector2f position);
 };
 
 

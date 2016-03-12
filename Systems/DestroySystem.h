@@ -19,14 +19,18 @@ public:
         toDestroy.clear();
     }
 
+    void destroy(ex::Entity entity) {
+        toDestroy.insert(entity);
+    }
+
     void receive(const CollisionEvent &collision) {
-        onCollisionEnter(collision, "bullet", "test_object", [this](ex::Entity bullet, ex::Entity testObject){
-            toDestroy.insert(bullet);
-            toDestroy.insert(testObject);
+        onCollisionEnter(collision, ColliderTag::Bullet, ColliderTag::TestObject, [this](ex::Entity bullet, ex::Entity testObject){
+            destroy(bullet);
+            destroy(testObject);
         });
     }
 
-    void onCollisionEnter(const CollisionEvent& collision, const std::string& tag1, const std::string& tag2,
+    void onCollisionEnter(const CollisionEvent& collision, const ColliderTag tag1, const ColliderTag tag2,
                             std::function<void(ex::Entity, ex::Entity)> func)
     {
         if (collision.leftTag == tag1 && collision.rightTag == tag2)

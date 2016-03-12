@@ -5,12 +5,14 @@
 #ifndef INVADERS_ECS_COLLISIONEVENT_H
 #define INVADERS_ECS_COLLISIONEVENT_H
 
+#include "../Tags.h"
+
 struct CollisionEvent {
-    CollisionEvent(ex::Entity left, ex::Entity right, std::string leftTag, std::string rightTag)
+    CollisionEvent(ex::Entity left, ex::Entity right, ColliderTag leftTag, ColliderTag rightTag)
             : left(left), right(right), leftTag(leftTag), rightTag(rightTag) {}
 
     ex::Entity left, right;
-    std::string leftTag, rightTag;
+    ColliderTag leftTag, rightTag;
 };
 
 #endif //INVADERS_ECS_COLLISIONEVENT_H
