@@ -12,6 +12,6 @@ struct SceneNode {
     explicit SceneNode(std::vector<SceneNode*> nodes) : nodes(nodes) {}
 
     std::vector<SceneNode*> nodes;
-    Body* bodyComponent;
+    Transform* connectedTransform;
 };
 #endif //INVADERS_ECS_SCENENODE_H

@@ -17,10 +17,10 @@ public:
 
     void update(ex::EntityManager &es, ex::EventManager &events, ex::TimeDelta dt) override {
         // update the colliders based on the bodies' position
-        es.each<Body, Collider> ([](ex::Entity entity, Body &body, Collider &collider) {
-            collider.rect.left = body.position.x;
-            collider.rect.top = body.position.y;
-            std::cout << "body: " << body.position.x << " " << body.position.y << std::endl;
+        es.each<Transform, Collider> ([](ex::Entity entity, Transform &transform, Collider &collider) {
+            collider.rect.left = transform.position.x;
+            collider.rect.top = transform.position.y;
+            std::cout << "body: " << transform.position.x << " " << transform.position.y << std::endl;
         });
 
         // emit collision event

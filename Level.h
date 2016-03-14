@@ -21,6 +21,7 @@ namespace ex = entityx;
 #include "Components/Player.h"
 #include "Components/PrimitiveShape.h"
 #include "Components/Sprite.h"
+#include "Components/Transform.h"
 
 #include "Events/CollisionEvent.h"
 

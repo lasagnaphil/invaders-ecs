@@ -16,7 +16,7 @@ public:
     }
 
     void update(ex::EntityManager &es, ex::EventManager &events, ex::TimeDelta dt) override {
-        es.each<Player, Body, PrimitiveShape>([dt, &es](ex::Entity entity, Player& player, Body& body, PrimitiveShape& primitiveShape)
+        es.each<Player, Transform, Body, PrimitiveShape>([dt, &es](ex::Entity entity, Player& player, Transform& transform, Body& body, PrimitiveShape& primitiveShape)
         {
             if(InputManager::inst().map.isActive("left"))
                 body.velocity.x = -player.speed;
@@ -27,7 +27,7 @@ public:
             }
 
             if(InputManager::inst().map.isActive("shoot")){
-                EntityFactory::createBullet(es, body.position, -100, 3);
+                EntityFactory::createBullet(es, transform.position, -100, 3);
             }
         });
     }

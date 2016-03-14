@@ -11,14 +11,14 @@ class BodySystem : public ex::System<BodySystem>
 {
 public:
     void update(ex::EntityManager &es, ex::EventManager &events, ex::TimeDelta dt) override {
-        es.each<Body>([dt](ex::Entity entity, Body &body) {
-            body.position += body.velocity * static_cast<float>(dt);
-            body.rotation += body.angVelocity * dt;
+        es.each<Transform, Body>([dt](ex::Entity entity, Transform &transform, Body &body) {
+            transform.position += body.velocity * static_cast<float>(dt);
+            transform.rotation += body.angVelocity * dt;
         });
-        es.each<SceneNode, Body>([dt](ex::Entity entity, SceneNode &sceneNode, Body &body) {
+        es.each<SceneNode, Transform>([dt](ex::Entity entity, SceneNode &sceneNode, Transform &transform) {
             for (SceneNode* node : sceneNode.nodes) {
-                if (node->bodyComponent != nullptr)
-                    node->bodyComponent->position += body.position;
+                if (node->connectedTransform!= nullptr)
+                    node->connectedTransform->position += transform.position;
             }
         });
     }
