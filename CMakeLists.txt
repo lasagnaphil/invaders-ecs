@@ -5,7 +5,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
 set(SOURCE_FILES main.cpp Components/Body.h Components/Collider.h Components/Player.h Components/PrimitiveShape.h Components/Sprite.h
         Events/CollisionEvent.h
-        Systems/BodySystem.h Systems/CollisionSystem.h DestroyManager.h Systems/PlayerSystem.h Systems/PrimitiveSystem.h Systems/RenderSystem.h Components/Bullet.h EntityFactory.cpp EntityFactory.h InputManager.h Tags.h Components/Enemy.h Systems/EnemySystem.h Game.cpp Game.h Level.cpp Level.h Components/SceneNode.h Components/Transform.h Constants.h)
+        Systems/BodySystem.h Systems/CollisionSystem.h DestroyManager.h Systems/PlayerSystem.h Systems/PrimitiveSystem.h Systems/RenderSystem.h Components/Bullet.h EntityFactory.cpp EntityFactory.h InputManager.h Tags.h Components/Enemy.h Systems/EnemySystem.h Game.cpp Game.h Level.cpp Level.h Components/SceneNode.h Components/Transform.h Constants.h Systems/BulletSystem.h)
 add_executable(invaders_ecs ${SOURCE_FILES})
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")

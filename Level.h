@@ -31,6 +31,7 @@ namespace ex = entityx;
 #include "Systems/PrimitiveSystem.h"
 #include "Systems/RenderSystem.h"
 #include "Systems/EnemySystem.h"
+#include "Systems/BulletSystem.h"
 
 #include "EntityFactory.h"
 #include "InputManager.h"

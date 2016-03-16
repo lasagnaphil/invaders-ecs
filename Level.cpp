@@ -12,6 +12,7 @@ void Level::start(sf::RenderTarget &target, sf::Font &font)
     systems.add<RenderSystem>(target, font);
     systems.add<EnemySystem>();
     systems.add<PlayerSystem>();
+    systems.add<BulletSystem>();
     systems.configure();
 
     // create the player
@@ -29,6 +30,7 @@ void Level::update(ex::TimeDelta dt)
     systems.update<RenderSystem>(dt);
     systems.update<EnemySystem>(dt);
     systems.update<PlayerSystem>(dt);
+    systems.update<BulletSystem>(dt);
 
     DestroyManager::inst().update(dt);
 }

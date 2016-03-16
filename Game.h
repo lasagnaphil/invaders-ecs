@@ -28,5 +28,5 @@ private:
     sf::Clock clock;
 };
 
-
 #endif //INVADERS_ECS_GAME_H
+

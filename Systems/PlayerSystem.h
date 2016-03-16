@@ -27,7 +27,7 @@ public:
             }
 
             if(InputManager::inst().map.isActive("shoot")){
-                EntityFactory::createBullet(es, transform.position, -100, 3);
+                EntityFactory::createBullet(es, transform.position, -300, 3);
             }
         });
     }
