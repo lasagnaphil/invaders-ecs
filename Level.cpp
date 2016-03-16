@@ -10,7 +10,7 @@ void Level::start(sf::RenderTarget &target, sf::Font &font)
     systems.add<PrimitiveSystem>();
     systems.add<CollisionSystem>();
     systems.add<RenderSystem>(target, font);
-
+    systems.add<EnemySystem>();
     systems.add<PlayerSystem>();
     systems.configure();
 
@@ -18,9 +18,7 @@ void Level::start(sf::RenderTarget &target, sf::Font &font)
     EntityFactory::createPlayer(entities);
 
     // create the entities
-    for(int i = 0; i < 10; i++) {
-        EntityFactory::createTestObject(entities, sf::Vector2f(100.0f, 100.0f + 40.0f * i), sf::Vector2f(0.0f, 10.0f * (10-i)));
-    }
+    EntityFactory::createEnemies(entities, 10, 5, 50.0f, 50.0f);
 }
 
 void Level::update(ex::TimeDelta dt)
@@ -29,7 +27,7 @@ void Level::update(ex::TimeDelta dt)
     systems.update<PrimitiveSystem>(dt);
     systems.update<CollisionSystem>(dt);
     systems.update<RenderSystem>(dt);
-
+    systems.update<EnemySystem>(dt);
     systems.update<PlayerSystem>(dt);
 
     DestroyManager::inst().update(dt);

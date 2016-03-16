@@ -20,7 +20,7 @@ public:
         es.each<Transform, Collider> ([](ex::Entity entity, Transform &transform, Collider &collider) {
             collider.rect.left = transform.position.x;
             collider.rect.top = transform.position.y;
-            std::cout << "body: " << transform.position.x << " " << transform.position.y << std::endl;
+            // std::cout << "body: " << transform.position.x << " " << transform.position.y << std::endl;
         });
 
         // emit collision event
@@ -36,9 +36,9 @@ public:
     }
 
     void receive(const CollisionEvent &event) {
-        event.onCollision(ColliderTag::Bullet, ColliderTag::TestObject, [](ex::Entity bullet, ex::Entity testObject){
+        event.onCollision(ColliderTag::Bullet, ColliderTag::Enemy, [](ex::Entity bullet, ex::Entity enemy){
             DestroyManager::inst().destroy(bullet);
-            DestroyManager::inst().destroy(testObject);
+            DestroyManager::inst().destroy(enemy);
         });
     }
 

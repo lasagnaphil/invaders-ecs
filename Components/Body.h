@@ -6,8 +6,11 @@
 #define INVADERS_ECS_BODY_H
 
 struct Body {
-    Body(const sf::Vector2f &velocity, float angVelocity = 0.0)
+    explicit Body(const sf::Vector2f &velocity = sf::Vector2f(), float angVelocity = 0.0f)
             : velocity(velocity), angVelocity(angVelocity) {}
+    explicit Body(float velX, float velY, float angVelocity = 0.0f)
+            : velocity(velX, velY), angVelocity(angVelocity) {}
+
     sf::Vector2f velocity;
     float angVelocity;
 };

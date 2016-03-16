@@ -11,8 +11,9 @@
 #include "Components/Player.h"
 #include "Components/Transform.h"
 #include "Tags.h"
+#include "Game.h"
 
-ex::Entity& EntityFactory::createPlayer(ex::EntityManager &es)
+void EntityFactory::createPlayer(ex::EntityManager &es)
 {
     ex::Entity entity = es.create();
     entity.assign<Player>(400.0f, 100, 3);
@@ -23,18 +24,18 @@ ex::Entity& EntityFactory::createPlayer(ex::EntityManager &es)
     entity.assign<Collider>(shape->getLocalBounds(), ColliderTag::Player);
     entity.assign<PrimitiveShape>(std::move(shape));
 }
-ex::Entity& EntityFactory::createBullet(ex::EntityManager& es, sf::Vector2f position, float speed, int damage)
+void EntityFactory::createBullet(ex::EntityManager& es, sf::Vector2f position, float speed, int damage)
 {
     ex::Entity bullet = es.create();
     bullet.assign<Transform>(position);
-    bullet.assign<Body>(sf::Vector2f(0.0f, speed));
+    bullet.assign<Body>(0.0f, speed);
     std::unique_ptr<sf::CircleShape> shape(new sf::CircleShape(4));
     shape->setFillColor(sf::Color::Green);
     bullet.assign<Collider>(shape->getLocalBounds(), ColliderTag::Bullet);
     bullet.assign<PrimitiveShape>(std::move(shape));
     bullet.assign<Bullet>(damage);
 }
-ex::Entity &EntityFactory::createTestObject(ex::EntityManager &es, sf::Vector2f position, sf::Vector2f velocity)
+void EntityFactory::createTestObject(ex::EntityManager &es, sf::Vector2f position, sf::Vector2f velocity)
 {
     ex::Entity entity = es.create();
     entity.assign<Transform>(position);
@@ -44,14 +45,24 @@ ex::Entity &EntityFactory::createTestObject(ex::EntityManager &es, sf::Vector2f 
     entity.assign<Collider>(shape->getLocalBounds(), ColliderTag::TestObject);
     entity.assign<PrimitiveShape>(std::move(shape));
 }
-
-ex::Entity &EntityFactory::createEnemy(ex::EntityManager &es, sf::Vector2f position)
+void EntityFactory::createEnemy(ex::EntityManager &es, sf::Vector2f position, bool canShoot)
 {
     ex::Entity entity = es.create();
     entity.assign<Transform>(position);
-    entity.assign<Body>(sf::Vector2f(0.0f, 0.0f));
+    entity.assign<Body>(-50.0f, 0.0f);
     std::unique_ptr<sf::RectangleShape> shape(new sf::RectangleShape(sf::Vector2f(20.0f, 20.0f)));
     shape->setFillColor(sf::Color(128, 128, 0));
     entity.assign<Collider>(shape->getLocalBounds(), ColliderTag::Enemy);
     entity.assign<PrimitiveShape>(std::move(shape));
+    entity.assign<Enemy>(50.0f, 10, canShoot);
+}
+void EntityFactory::createEnemies(ex::EntityManager &es, int width, int height, float xDist, float yDist)
+{
+    float startPointX = SCREEN_WIDTH / 2 - width * xDist / 2;
+    float startPointY = yDist * 2;
+    for (int j = 0; j < height; j++) {
+        for (int i = 0; i < width; i++) {
+            createEnemy(es, sf::Vector2f(startPointX + i * xDist, startPointY + j * yDist), false);
+        }
+    }
 }

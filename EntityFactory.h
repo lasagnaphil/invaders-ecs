@@ -13,10 +13,11 @@ namespace ex = entityx;
 class EntityFactory
 {
 public:
-    static ex::Entity& createPlayer(ex::EntityManager& es);
-    static ex::Entity& createBullet(ex::EntityManager& es, sf::Vector2f position, float speed, int damage);
-    static ex::Entity& createTestObject(ex::EntityManager& es, sf::Vector2f position, sf::Vector2f velocity);
-    static ex::Entity& createEnemy(ex::EntityManager& es, sf::Vector2f position);
+    static void createPlayer(ex::EntityManager& es);
+    static void createBullet(ex::EntityManager& es, sf::Vector2f position, float speed, int damage);
+    static void createTestObject(ex::EntityManager& es, sf::Vector2f position, sf::Vector2f velocity);
+    static void createEnemy(ex::EntityManager& es, sf::Vector2f position, bool canShoot);
+    static void createEnemies(ex::EntityManager& es, int width, int height, float xDist, float yDist);
 };
 
 

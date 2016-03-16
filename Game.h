@@ -10,10 +10,8 @@
 
 #include <Thor/Resources.hpp>
 
+#include "Constants.h"
 #include "Level.h"
-
-constexpr int SCREEN_WIDTH = 800;
-constexpr int SCREEN_HEIGHT = 600;
 
 class Game
 {
@@ -22,7 +20,6 @@ public:
     void update();
     void gameLoop();
     void render();
-
 
 private:
     sf::RenderWindow window;

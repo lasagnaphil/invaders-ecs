@@ -7,11 +7,11 @@
 
 struct Enemy
 {
-    explicit Enemy(int speed, int damage, bool canShoot) : speed(speed), damage(damage), canShoot(canShoot)
+    explicit Enemy(float speed, int damage, bool canShoot) : speed(speed), damage(damage), canShoot(canShoot)
     {
 
     }
-    int speed;
+    float speed;
     int damage;
     bool canShoot;
 };
