@@ -6,6 +6,7 @@
 #define INVADERS_ECS_COLLISIONSYSTEM_H
 
 #include "../DestroyManager.h"
+#include "../Components/Bullet.h"
 
 class CollisionSystem : public ex::System<CollisionSystem>, public ex::Receiver<CollisionSystem>
 {
@@ -36,12 +37,19 @@ public:
     }
 
     void receive(const CollisionEvent &event) {
-        event.onCollision(ColliderTag::Bullet, ColliderTag::Enemy, [this](ex::Entity bullet, ex::Entity enemy){
+        event.onCollision(ColliderTag::PlayerBullet, ColliderTag::Enemy, [this](ex::Entity bullet, ex::Entity enemy){
             DestroyManager::inst().destroy(bullet);
             DestroyManager::inst().destroy(enemy);
             es->each<Player>([](ex::Entity entity, Player &player) {
                 player.score += 10;
             });
+        });
+        event.onCollision(ColliderTag::EnemyBullet, ColliderTag::Enemy, [this](ex::Entity bullet, ex::Entity enemy) {
+            DestroyManager::inst().destroy(bullet);
+        });
+        event.onCollision(ColliderTag::EnemyBullet, ColliderTag::Player, [this](ex::Entity bullet, ex::Entity player) {
+            DestroyManager::inst().destroy(bullet);
+            player.component<Player>()->health -= bullet.component<Bullet>()->damage;
         });
     }
 

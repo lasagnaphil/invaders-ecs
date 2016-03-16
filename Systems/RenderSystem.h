@@ -40,7 +40,8 @@ public:
         }
         es.each<Player>([this](ex::Entity entity, Player& player) {
             std::ostringstream scoreOut;
-            scoreOut << "Score : " << player.score << "\n" << "Life : " << player.life;
+            scoreOut << "Score : " << player.score << "\n" << "Life : " << player.life << "\n"
+                     << "Health : " << player.health;
             scoreText.setString(scoreOut.str());
         });
         target.draw(fpsText);

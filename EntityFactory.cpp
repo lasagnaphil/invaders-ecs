@@ -24,14 +24,14 @@ void EntityFactory::createPlayer(ex::EntityManager &es)
     entity.assign<Collider>(shape->getLocalBounds(), ColliderTag::Player);
     entity.assign<PrimitiveShape>(std::move(shape));
 }
-void EntityFactory::createBullet(ex::EntityManager& es, sf::Vector2f position, float speed, int damage)
+void EntityFactory::createBullet(ex::EntityManager& es, sf::Vector2f position, float speed, int damage, ColliderTag tag)
 {
     ex::Entity bullet = es.create();
     bullet.assign<Transform>(position);
     bullet.assign<Body>(0.0f, speed);
     std::unique_ptr<sf::CircleShape> shape(new sf::CircleShape(4));
     shape->setFillColor(sf::Color::Green);
-    bullet.assign<Collider>(shape->getLocalBounds(), ColliderTag::Bullet);
+    bullet.assign<Collider>(shape->getLocalBounds(), tag);
     bullet.assign<PrimitiveShape>(std::move(shape));
     bullet.assign<Bullet>(damage);
 }
@@ -62,7 +62,7 @@ void EntityFactory::createEnemies(ex::EntityManager &es, int width, int height, 
     float startPointY = yDist * 2;
     for (int j = 0; j < height; j++) {
         for (int i = 0; i < width; i++) {
-            createEnemy(es, sf::Vector2f(startPointX + i * xDist, startPointY + j * yDist), false);
+            createEnemy(es, sf::Vector2f(startPointX + i * xDist, startPointY + j * yDist), true);
         }
     }
 }
