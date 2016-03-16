@@ -8,13 +8,14 @@
 struct Player
 {
 public:
-    Player(float speed, int health, int life) : speed(speed), health(health), life(life)
+    Player(float speed, int health, int life) : speed(speed), health(health), life(life), score(0)
     {
 
     }
     float speed;
     int health;
     int life;
+    int score;
 };
 
 

@@ -10,7 +10,7 @@
 class CollisionSystem : public ex::System<CollisionSystem>, public ex::Receiver<CollisionSystem>
 {
 public:
-    explicit CollisionSystem() {}
+    explicit CollisionSystem(ex::EntityManager &es) : es(&es) {}
     void configure(ex::EventManager &events) override {
         events.subscribe<CollisionEvent>(*this);
     }
@@ -36,9 +36,12 @@ public:
     }
 
     void receive(const CollisionEvent &event) {
-        event.onCollision(ColliderTag::Bullet, ColliderTag::Enemy, [](ex::Entity bullet, ex::Entity enemy){
+        event.onCollision(ColliderTag::Bullet, ColliderTag::Enemy, [this](ex::Entity bullet, ex::Entity enemy){
             DestroyManager::inst().destroy(bullet);
             DestroyManager::inst().destroy(enemy);
+            es->each<Player>([](ex::Entity entity, Player &player) {
+                player.score += 10;
+            });
         });
     }
 
@@ -49,6 +52,7 @@ public:
         std::cout << rect.width << " " << rect.height << std::endl;
     }
 private:
+    ex::EntityManager* es;
 };
 
 #endif //INVADERS_ECS_COLLISIONSYSTEM_H
