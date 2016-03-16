@@ -20,12 +20,12 @@ public:
         es.each<Enemy, Transform>([this, dt](ex::Entity entity, Enemy &enemy, Transform &transform) {
             if (transform.position.x < bounds.left) {
                 direction = ChangingDirection::Right;
-                transform.position.x = bounds.left + 0.001f;
+                transform.position.x = bounds.left + 1.0f;
                 std::cout << "Changed direction to right" << std::endl;
             }
             else if (transform.position.x > bounds.left + bounds.width) {
                 direction = ChangingDirection::Left;
-                transform.position.y = bounds.left + bounds.width - 0.001f;
+                transform.position.x = bounds.left + bounds.width - 1.0f;
                 std::cout << "Changed direction to left" << std::endl;
             }
         });
