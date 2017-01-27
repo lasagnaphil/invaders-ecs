@@ -6,11 +6,12 @@
 #define INVADERS_ECS_COLLISIONSYSTEM_H
 
 #include "../DestroyManager.h"
+#include "../Components/Bullet.h"
 
 class CollisionSystem : public ex::System<CollisionSystem>, public ex::Receiver<CollisionSystem>
 {
 public:
-    explicit CollisionSystem() {}
+    explicit CollisionSystem(ex::EntityManager &es) : es(&es) {}
     void configure(ex::EventManager &events) override {
         events.subscribe<CollisionEvent>(*this);
     }
@@ -36,9 +37,19 @@ public:
     }
 
     void receive(const CollisionEvent &event) {
-        event.onCollision(ColliderTag::Bullet, ColliderTag::Enemy, [](ex::Entity bullet, ex::Entity enemy){
+        event.onCollision(ColliderTag::PlayerBullet, ColliderTag::Enemy, [this](ex::Entity bullet, ex::Entity enemy){
             DestroyManager::inst().destroy(bullet);
             DestroyManager::inst().destroy(enemy);
+            es->each<Player>([](ex::Entity entity, Player &player) {
+                player.score += 10;
+            });
+        });
+        event.onCollision(ColliderTag::EnemyBullet, ColliderTag::Enemy, [this](ex::Entity bullet, ex::Entity enemy) {
+            DestroyManager::inst().destroy(bullet);
+        });
+        event.onCollision(ColliderTag::EnemyBullet, ColliderTag::Player, [this](ex::Entity bullet, ex::Entity player) {
+            DestroyManager::inst().destroy(bullet);
+            player.component<Player>()->health -= bullet.component<Bullet>()->damage;
         });
     }
 
@@ -49,6 +60,7 @@ public:
         std::cout << rect.width << " " << rect.height << std::endl;
     }
 private:
+    ex::EntityManager* es;
 };
 
 #endif //INVADERS_ECS_COLLISIONSYSTEM_H

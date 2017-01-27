@@ -9,15 +9,20 @@
 #include "../Tags.h"
 #include "../Components/Enemy.h"
 
+#include <algorithm>
+
 enum class ChangingDirection { None, Left, Right };
 
 class EnemySystem : public ex::System<EnemySystem>
 {
 public:
-    EnemySystem() : bounds(SCREEN_WIDTH*0.1f, SCREEN_HEIGHT*0.1f, SCREEN_WIDTH*0.8f, SCREEN_HEIGHT*0.8f) {}
+    EnemySystem() : bounds(SCREEN_WIDTH*0.1f, SCREEN_HEIGHT*0.1f, SCREEN_WIDTH*0.8f, SCREEN_HEIGHT*0.8f),
+                    randEngine(randDevice()), randDist(1, 1000) {}
     void update(ex::EntityManager &es, ex::EventManager &events, ex::TimeDelta dt) override
     {
+        std::map<Enemy*, Transform*> transforms;
         es.each<Enemy, Transform>([this, dt](ex::Entity entity, Enemy &enemy, Transform &transform) {
+            transforms(&enemy, &transform);
             if (transform.position.x < bounds.left) {
                 direction = ChangingDirection::Right;
                 transform.position.x = bounds.left + 1.0f;
@@ -29,7 +34,13 @@ public:
                 std::cout << "Changed direction to left" << std::endl;
             }
         });
-        es.each<Enemy, Transform, Body>([this, dt](ex::Entity entity, Enemy &enemy, Transform &transform, Body &body) {
+        es.each<Enemy, Transform, Body, Collider>([this, &es, dt](ex::Entity entity, Enemy &enemy, Transform &transform, Body &body, Collider &collider) {
+            auto transformInFront = std::find_if(transforms.begin(), transforms.end(), [&transform](Transform& t) -> bool {
+                return (static_cast<int>(t.position.x) == static_cast<int>(transform.position.x)) && t.position.y > transform.position.y;*,
+            });
+            if (transformInFront != transforms.end()) {
+
+            }
             if (direction == ChangingDirection::Left) {
                 body.velocity.x = -enemy.speed;
                 moveEnemyForward(transform);
@@ -37,6 +48,13 @@ public:
             else if (direction == ChangingDirection::Right) {
                 body.velocity.x = enemy.speed;
                 moveEnemyForward(transform);
+            }
+
+            if (enemy.canShoot) {
+                int randNum = randDist(randEngine);
+                if (randNum <= 10) {
+                    EntityFactory::createBullet(es, transform.position + sf::Vector2f(0.0f, collider.rect.height), 300.0f, 10, ColliderTag::EnemyBullet);
+                }
             }
         });
         direction = ChangingDirection::None;
@@ -49,5 +67,10 @@ private:
     sf::FloatRect bounds;
     ChangingDirection direction = ChangingDirection::None;
     float moveForwardLength = 30.0f;
+
+    std::random_device randDevice;
+    std::default_random_engine randEngine;
+    std::uniform_int_distribution<int> randDist;
+
 };
 #endif //INVADERS_ECS_ENEMYSYSTEM_H

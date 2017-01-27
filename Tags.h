@@ -6,7 +6,7 @@
 #define INVADERS_ECS_TAGS_H
 
 enum class ColliderTag {
-    None, Player, Enemy, Bullet, TestObject
+    None, Player, Enemy, PlayerBullet, EnemyBullet, TestObject
 };
 
 #endif //INVADERS_ECS_TAGS_H

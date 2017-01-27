@@ -8,7 +8,7 @@ void Level::start(sf::RenderTarget &target, sf::Font &font)
 {
     systems.add<BodySystem>();
     systems.add<PrimitiveSystem>();
-    systems.add<CollisionSystem>();
+    systems.add<CollisionSystem>(entities);
     systems.add<RenderSystem>(target, font);
     systems.add<EnemySystem>();
     systems.add<PlayerSystem>();

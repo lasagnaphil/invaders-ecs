@@ -7,6 +7,7 @@
 
 #include <entityx/entityx.h>
 #include <SFML/Graphics.hpp>
+#include "Tags.h"
 
 namespace ex = entityx;
 
@@ -14,7 +15,8 @@ class EntityFactory
 {
 public:
     static void createPlayer(ex::EntityManager& es);
-    static void createBullet(ex::EntityManager& es, sf::Vector2f position, float speed, int damage);
+    static void createBullet(ex::EntityManager& es, sf::Vector2f position,
+                             float speed, int damage, ColliderTag tag);
     static void createTestObject(ex::EntityManager& es, sf::Vector2f position, sf::Vector2f velocity);
     static void createEnemy(ex::EntityManager& es, sf::Vector2f position, bool canShoot);
     static void createEnemies(ex::EntityManager& es, int width, int height, float xDist, float yDist);
