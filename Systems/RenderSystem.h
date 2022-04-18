@@ -25,7 +25,7 @@ public:
 
     void update(ex::EntityManager &es, ex::EventManager &events, ex::TimeDelta dt) override {
         es.each<Body, PrimitiveShape>([this](ex::Entity entity, Body &body, PrimitiveShape &renderable) {
-            target.draw(*renderable.shape.get());
+            target.draw(*renderable.shape);
         });
         last_update += dt;
         frame_count++;

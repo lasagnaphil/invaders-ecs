@@ -6,9 +6,9 @@
 #define INVADERS_ECS_PRIMITIVESHAPE_H
 
 struct PrimitiveShape {
-    explicit PrimitiveShape(std::unique_ptr<sf::Shape> shape) : shape(std::move(shape)) {}
+    explicit PrimitiveShape(sf::Shape* shape) : shape(shape) {}
 
-    std::unique_ptr<sf::Shape> shape;
+    sf::Shape* shape;
 };
 
 #endif //INVADERS_ECS_PRIMITIVESHAPE_H
